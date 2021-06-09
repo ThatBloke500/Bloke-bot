@@ -14,9 +14,13 @@ logger.add(new logger.transports.Console, {
 });
 logger.level = 'debug';
 // Initialize Discord Bot
-var bot = new Discord.Client({
+var bot = new Discord.Client()
+bot.login(process.env.BKBT_TOKEN)
+/*var bot = new Discord.Client({
    token: process.env.BKBT_TOKEN,
-   autorun: true
+   autorun: true*/
+
+
 });
 bot.on('ready', function (evt) {
     logger.info('Connected');
