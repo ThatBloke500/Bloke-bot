@@ -1,0 +1,11 @@
+{
+  "name": "blokebot",
+  "version": "1.0.0",
+  "description": "Experimental Competitive Bot for World of tanks console",
+  "main": "bot.js",
+  "author": "Bloke",
+  "dependencies": {
+    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
+    "winston": "3.3.3"
+  }
+}
