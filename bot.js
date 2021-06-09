@@ -1,11 +1,5 @@
 /*TODO:
-make !sch offset correctly by adding a variable called offset that is added to the minutes during rotation position's calculation
-while factoring in overflow and sanitising data. use %60 for it.
-
-offset = (Math.trunc(fullcycles) * 96) % 60
-
-Maybe remove resets or use it to store a list of the above 
-Find out why the bot doesnt like being in other servers - maybe I'm missing some permissions??
+nothing yet.
 */
 
 
@@ -44,7 +38,7 @@ var Rotation = ["Malinowka","Fredvang","Himmelsdorf","El Halluf","Cao Bang","Cli
     "Pilsen",
     "Dezful",
     "Sand River"];
-var Resets = [96, 192, 288, 384, 480, 576, 672, 768, 864, 960, 1056, 1152, 1248, 1344, 1440]
+//var Resets = [96, 192, 288, 384, 480, 576, 672, 768, 864, 960, 1056, 1152, 1248, 1344, 1440]
 
 
 bot.on('message', function (user, userID, channelID, message, evt) {
@@ -99,9 +93,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                 hours = (hours+2) % 24
                 var list = ' ';
                 var Elapsed = mins + ((hours) * 60);
-                var Fullcycles = Elapsed / 96; // no more than 15
-                //var offset = (Math.trunc(Fullcycles)*36) % 60;
-                //mins = mins + offset < 60 ? mins+=offset : mins= (mins+offset)%60; // works but now I need a seperate value ot give current time                 
+                var Fullcycles = Elapsed / 96; // no more than 15              
                     var tmod = mins%4;
                     mins -=tmod;
                     var cycle = Fullcycles - Math.trunc(Fullcycles);
