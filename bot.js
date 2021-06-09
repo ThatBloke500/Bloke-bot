@@ -20,15 +20,13 @@ bot.login(process.env.BKBT_TOKEN)
    token: process.env.BKBT_TOKEN,
    autorun: true*/
 
-
-});
 bot.on('ready', function (evt) {
     logger.info('Connected');
     logger.info('Logged in as: ');
     logger.info(bot.username);
-
-
 });
+
+
 var position = 0;
 var Rotation = ["Malinowka","Fredvang","Himmelsdorf","El Halluf","Cao Bang","Cliff","Vineyard","Mannheim","Kaunas","Highway","Dezful","Mountain Pass","Prokhorovka",
     "Fredvang",
