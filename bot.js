@@ -68,7 +68,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                 console.log(Maplist)
                 break;
             case 'nxt' || "nxt":
-                var Elapsed = new Date().getMinutes() + (( new Date().getHours() + 1) * 60);
+                var Elapsed = new Date().getMinutes() + (( (new Date().getHours() + 2)%60) * 60);
                 console.log(Elapsed)
                 var Fullcycles = Elapsed / 96;
                 console.log("fullcycles = " + Fullcycles)
@@ -94,20 +94,22 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                 var hours = new Date().getUTCHours();
                 hours = (hours+2) % 24
                 var list = ' ';
-                var Elapsed = mins + ((hours) * 60);
-                var Fullcycles = Elapsed / 96; // no more than 15              
-                    var tmod = mins%4;
-                    mins -=tmod;
-                    var cycle = Fullcycles - Math.trunc(Fullcycles);
-                    var position;
-                    if(mins >= 4){
-                        mins -= 4;
-                        if(mins + 4 > 56){mins = 56;
+                var tmod = mins%4;
+                    mins -=tmod; //might be able to remove the var and just make it a single line.
+                if(mins >= 4){
+                    mins -= 4;
+                    if(mins + 4 > 56){mins = 56;
                         }
                     }
                     else if(mins < 4){                       
                         mins =0;                   
                     }
+                var Elapsed = mins + ((hours) * 60);
+                var Fullcycles = Elapsed / 96; // no more than 15              
+                    
+                    var cycle = Fullcycles - Math.trunc(Fullcycles);
+                    var position;
+
                     position = Math.trunc(cycle * 24)
                      var i = 0; 
                      var SaneMin= "";                   
@@ -130,13 +132,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                         to: channelID,
                         message: "The following times are set for UTC+2: \n" + list});
                         console.log("mins: " + SaneMin + "position: " + position + " Fullcycles: " + Fullcycles)
-                }
-
-
-                    
-                
-
-            // Just add any case commands if you want to..
+                }              
          }
 });
 
