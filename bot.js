@@ -96,14 +96,6 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                 var list = ' ';
                 var tmod = mins%4;
                     mins -=tmod; //might be able to remove the var and just make it a single line.
-                if(mins >= 4){
-                    mins -= 4;
-                    if(mins + 4 > 56){mins = 56;
-                        }
-                    }
-                    else if(mins < 4){                       
-                        mins =0;                   
-                    }
                 var Elapsed = mins + ((hours) * 60);
                 var Fullcycles = Elapsed / 96; // no more than 15              
                     
