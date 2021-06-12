@@ -67,9 +67,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                 break;
             case 'nxt' || "nxt":
                 var Elapsed = new Date().getMinutes() + (( new Date().getUTCHours() + 2) * 60);
-                console.log(Elapsed)
-                //var Fullcycles = Elapsed / 96;
-                elapsed -= Elapsed%4
+                Elapsed -= Elapsed%4
                 var position = (Elapsed % 96) / 4;
                 console.log(position)
                 bot.sendMessage({
