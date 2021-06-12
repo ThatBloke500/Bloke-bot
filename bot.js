@@ -26,8 +26,6 @@ bot.on('ready', function (evt) {
     logger.info(bot.username);
 });
 
-
-var position = 0;
 var Rotation = ["Malinowka","Fredvang","Himmelsdorf","El Halluf","Cao Bang","Cliff","Vineyard","Mannheim","Kaunas","Highway","Dezful","Mountain Pass","Prokhorovka",
     "Fredvang",
     "Kasserine",
@@ -68,48 +66,31 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                 console.log(Maplist)
                 break;
             case 'nxt' || "nxt":
-                var Elapsed = new Date().getMinutes() + (( (new Date().getHours() + 2)%60) * 60);
+                var Elapsed = new Date().getMinutes() + (( new Date().getUTCHours() + 2) * 60);
                 console.log(Elapsed)
-                var Fullcycles = Elapsed / 96;
-                console.log("fullcycles = " + Fullcycles)
-                if (Fullcycles < 1){
-                    position = Math.trunc(Fullcycles * 24);
-                    bot.sendMessage({
-                        to: channelID,
-                        message: "Current maps is: `" + Rotation[position] + "` next map is: `" + Rotation[position < 23? position +1 : 0] + "`"});
-                }
-                else{
-                    var cycle = Fullcycles - Math.trunc(Fullcycles);
-                    console.log("cycle = " + cycle);
-                    position = Math.trunc(cycle * 24);
-                    console.log("position= " +position)
-                    bot.sendMessage({
-                        to: channelID,
-                        message: "Current map is: `" + Rotation[position] + "` then: `" + Rotation[position < 23? position +1 : 0] + "`"});
-                }
+                //var Fullcycles = Elapsed / 96;
+                elapsed -= Elapsed%4
+                var position = (Elapsed % 96) / 4;
+                console.log(position)
+                bot.sendMessage({
+                    to: channelID,
+                    message: "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < 23? position +1 : 0] + "`"});
             break;
 
             case "sch":
                 var mins = new Date().getMinutes();
-                var hours = new Date().getUTCHours();
+                var hours = new Date().getUTCHours(); // needed to display date correctly in msg
                 hours = (hours+2) % 24
+                mins -= mins%4;
                 var list = ' ';
-                var tmod = mins%4;
-                    mins -=tmod; //might be able to remove the var and just make it a single line.
                 var Elapsed = mins + ((hours) * 60);
-                var Fullcycles = Elapsed / 96; // no more than 15              
-                    
-                    var cycle = Fullcycles - Math.trunc(Fullcycles);
-                    var position;
-
-                    position = Math.trunc(cycle * 24)
+                var position = (Elapsed % 96) / 4;
                      var i = 0; 
                      var SaneMin= "";                   
                     do{
                         if(mins < 10){SaneMin = ('0' + mins)}
                         else{SaneMin = mins + ''}
-                        if(position > 23){ position = 0}
-                        //absolute mins - var Minsis 
+                        if(position > Rotation.length){ position = 0} // make sure positon doesnt exceeed Rotation array length
                     list += "` " + hours + ":" + SaneMin  +"  " + Rotation[position] + "` \n";
                         if(mins >= 56) { 
                             mins = 0; //reset to continue iteration past one hour;
@@ -119,11 +100,10 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 
                         i++;
                         position++;
-                    }while(i <= 23)
+                    }while(i <= Rotation.length)
                         bot.sendMessage({
                         to: channelID,
                         message: "The following times are set for UTC+2: \n" + list});
-                        console.log("mins: " + SaneMin + "position: " + position + " Fullcycles: " + Fullcycles)
                 }              
          }
 });
