@@ -55,7 +55,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
             var Maplist = ' ';
                 Rotation.forEach(function callbackFn(element, index){
                     Maplist+= element
-                    if(index < Rotation.length){Maplist+= ', '}
+                    if(index < Rotation.length-1){Maplist+= ', '}
                 });
 
                 bot.sendMessage({
@@ -88,7 +88,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     do{
                         if(mins < 10){SaneMin = ('0' + mins)}
                         else{SaneMin = mins + ''}
-                        if(position > Rotation.length){ position = 0} // make sure positon doesnt exceeed Rotation array length
+                        if(position > Rotation.length-1){ position = 0} // make sure positon doesnt exceeed Rotation array length
                     list += "` " + hours + ":" + SaneMin  +"  " + Rotation[position] + "` \n";
                         if(mins >= 56) { 
                             mins = 0; //reset to continue iteration past one hour;
@@ -98,7 +98,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 
                         i++;
                         position++;
-                    }while(i <= Rotation.length)
+                    }while(i <= Rotation.length-1)
                         bot.sendMessage({
                         to: channelID,
                         message: "The following times are set for UTC+2: \n" + list});
