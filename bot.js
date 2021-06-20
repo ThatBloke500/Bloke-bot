@@ -26,7 +26,7 @@ bot.on('ready', function (evt) {
     logger.info(bot.username);
 });
 
-var Rotation = ["Malinowka","Fredvang","Himmelsdorf","El Halluf","Cao Bang","Cliff","Vineyard","Mannheim","Kaunas","Highway","Dezful","Mountain Pass","Prokhorovka",
+var Rot10 = ["Malinowka","Fredvang","Himmelsdorf","El Halluf","Cao Bang","Cliff","Vineyard","Mannheim","Kaunas","Highway","Dezful","Mountain Pass","Prokhorovka",
     "Fredvang",
     "Kasserine",
     "Steppes",
@@ -38,8 +38,55 @@ var Rotation = ["Malinowka","Fredvang","Himmelsdorf","El Halluf","Cao Bang","Cli
     "Pilsen",
     "Dezful",
     "Sand River"];
-//var Resets = [96, 192, 288, 384, 480, 576, 672, 768, 864, 960, 1056, 1152, 1248, 1344, 1440]
 
+var Rot6 = ["Malinowka","Highway","Himmelsdorf","El Halluf","Prokhorovka","Cliff","Vineyard","Abbey","Kaunas","Highway","El Halluf","Mountain Pass","Prokhorovka",
+"Cliff",
+"Kasserine",
+"Steppes",
+"Port",
+"Fisherman's Bay",
+"Sunset Coast",
+"Vineyards",
+"Arctic Region",
+"Pilsen",
+"Mines",
+"Sand River"];
+
+function nextmaps(Rotation){
+    var Elapsed = new Date().getMinutes() + (( new Date().getUTCHours() + 2) * 60);
+    Elapsed -= Elapsed%4
+    var position = (Elapsed % 96) / 4;
+ return "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < 23? position +1 : 0] + "`";
+    
+}
+
+function mapListing(Rotation){
+    var mins = new Date().getMinutes();
+    var hours = new Date().getUTCHours(); // needed to display date correctly in msg
+    hours = (hours+2) % 24
+    mins -= mins%4;
+    var list = ' ';
+    var Elapsed = mins + ((hours) * 60);
+    var position = (Elapsed % 96) / 4;
+         var i = 0; 
+         var SaneMin= "";                   
+        do{
+            if(mins < 10){SaneMin = ('0' + mins)}
+            else{SaneMin = mins + ''}
+            if(position > Rotation.length-1){ position = 0} // make sure positon doesnt exceeed Rotation array length
+        list += "` " + hours + ":" + SaneMin  +"  " + Rotation[position] + "` \n";
+            if(mins >= 56) { 
+                mins = 0; //reset to continue iteration past one hour;
+                hours < 23 ? hours++ : hours = 0; 
+            }
+                else{mins += 4;} // readies for next iteration
+
+            i++;
+            position++;
+        }while(i <= Rotation.length-1)
+    return list;
+    
+    }
 
 bot.on('message', function (user, userID, channelID, message, evt) {
     // Our bot needs to know if it will execute a command
@@ -50,32 +97,30 @@ bot.on('message', function (user, userID, channelID, message, evt) {
        
         args = args.splice(1);
         switch(cmd) {
-            // !ping
-        case 'maplist':
-            var Maplist = ' ';
-                Rotation.forEach(function callbackFn(element, index){
-                    Maplist+= element
-                    if(index < Rotation.length-1){Maplist+= ', '}
-                });
-
-                bot.sendMessage({
-                    to: channelID,
-                    message: Maplist
-                    
-                });
-                console.log(Maplist)
-                break;
             case 'nxt' || "nxt":
-                var Elapsed = new Date().getMinutes() + (( new Date().getUTCHours() + 2) * 60);
-                Elapsed -= Elapsed%4
-                var position = (Elapsed % 96) / 4;
-                console.log(position)
+                var msg = nextmaps(Rot10);
                 bot.sendMessage({
                     to: channelID,
-                    message: "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < 23? position +1 : 0] + "`"});
+                    message: msg});                
             break;
-
+            case 'nxt6':
+                var msg = nextmaps(Rot10);
+                bot.sendMessage({
+                    to: channelID,
+                    message: msg});
+                break;
             case "sch":
+                var list = mapListing(Rot10);
+                    bot.sendMessage({
+                    to: channelID,
+                    message: "Timezone: UTC+2, maps accurate for tier 9 and 10: \n" + list});
+                break;
+            case "sch6":
+                var list = mapListing(Rot6);
+                bot.sendMessage({
+                to: channelID,
+                message: "Timezone: UTC+2, maps accurate for tier 6 and below: \n" + list});
+            /*case "sch":
                 var mins = new Date().getMinutes();
                 var hours = new Date().getUTCHours(); // needed to display date correctly in msg
                 hours = (hours+2) % 24
@@ -101,7 +146,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     }while(i <= Rotation.length-1)
                         bot.sendMessage({
                         to: channelID,
-                        message: "The following times are set for UTC+2: \n" + list});
+                        message: "The following times are set for UTC+2: \n" + list});*/
                 }              
          }
 });
