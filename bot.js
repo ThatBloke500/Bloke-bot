@@ -59,7 +59,7 @@ var Rotnew = ["Ghost Town",
 "El Alamain"]
 
 function nextmaps(Rotation){
-     var offset = Date().getDate() * OfsT;
+     var offset = new Date().getDay() * OfsT;
     var Elapsed = new Date().getMinutes() + offset + (( new Date().getUTCHours() + 2) * 60);
     Elapsed -= Elapsed%4
     var position = (Elapsed % RotLth) / 4;
@@ -71,7 +71,7 @@ function nextmaps(Rotation){
 function mapListing(Rotation){
     var mins = new Date().getMinutes();
     var hours = new Date().getUTCHours(); // needed to display date correctly in msg
-    var offset = Date().getDate() * OfsT;
+    var offset = new Date().getDay() * OfsT;
     hours = ((hours+2) % 24)
     mins -= mins%4;
     var list = ' ';
