@@ -1,5 +1,8 @@
 /*TODO:
-nothing yet.
+Date.Day() starts on Sun NOT Mon, this must be adjusted. e.g. thurs = 4 so there's too much offset when doing simple Day * 16. refer to notes.
+Check to see if the Offset value is actually correct for all days.
+Focus on making !nxt work first - and change ternary operator for position to a generic value OR < 27
+check for other headaches.
 */
 
 
