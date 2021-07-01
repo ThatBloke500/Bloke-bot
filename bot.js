@@ -71,6 +71,7 @@ function nextmaps(Rotation){
     var position = (Elapsed % RotLth) / 4;
     if(offset != 0 && hours == 0 ||  24){ 
         position += (Rotation.length-1) - offset;
+        position %= (Rotation.length-1);
     }
  return "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < (Rotation.length-1)? position +1 : 0] + "`";
     
@@ -88,6 +89,7 @@ function mapListing(Rotation){
     var position = (Elapsed % RotLth) / 4;
     if(offset != 0 && hours == 0 ||  24){ 
         position += (Rotation.length-1) - offset;
+        position %= (Rotation.length-1);
     }
          var i = 0; 
          var SaneMin= "";                   
