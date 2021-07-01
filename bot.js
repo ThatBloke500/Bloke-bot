@@ -85,7 +85,7 @@ function mapListing(Rotation){
     hours = ((hours+2) % 24)
     mins -= mins%4;
     var list = ' ';
-    var Elapsed = mins + (hours*60) + offset;
+    var Elapsed = mins + (hours*60);
     var position = (Elapsed % RotLth) / 4;
     if(offset != 0 && hours == 0 ||  24){ 
         position += (Rotation.length-1) - offset;
