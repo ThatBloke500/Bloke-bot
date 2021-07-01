@@ -27,8 +27,6 @@ bot.on('ready', function (evt) {
 });
 
 var RotLth = 112;
-var OfsT = 4;
-
 var Rotnew = ["Ghost Town",	
 "Highway",
 "El Halluf",
@@ -58,7 +56,7 @@ var Rotnew = ["Ghost Town",
 "Kaunas",
 "El Alamain"]
 
-dayOffset = [24,0,4,8,12,16,20] //sun, mon, tue, wed, -> etc.
+dayOffset = [23,0,3,7,11,15,19] //sun, mon, tue, wed, -> etc.
 
 function nextmaps(Rotation){
      var offset = dayOffset[new Date().getDay()];
