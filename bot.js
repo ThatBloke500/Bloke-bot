@@ -30,7 +30,7 @@ bot.on('ready', function (evt) {
 });
 
 var RotLth = 112;
-var OfsT = 16;
+var OfsT = 4;
 
 var Rotnew = ["Ghost Town",	
 "Highway",
@@ -61,25 +61,34 @@ var Rotnew = ["Ghost Town",
 "Kaunas",
 "El Alamain"]
 
+dayOffset = [24,0,4,8,12,16,20] //sun, mon, tue, wed, -> etc.
+
 function nextmaps(Rotation){
-     var offset = new Date().getDay() * OfsT;
-    var Elapsed = new Date().getMinutes() + offset + (( new Date().getUTCHours() + 2) * 60);
+     var offset = dayOffset[new Date().getDay()];
+    var hours = new Date().getUTCHours() + 2;
+    var Elapsed = new Date().getMinutes() + (( hours) * 60);
     Elapsed -= Elapsed%4
     var position = (Elapsed % RotLth) / 4;
- return "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < 23? position +1 : 0] + "`";
+    if(offset != 0 && hours == 0 ||  24){ 
+        position += (Rotation.length-1) - offset;
+    }
+ return "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < (Rotation.length-1)? position +1 : 0] + "`";
     
 }
 
 
 function mapListing(Rotation){
     var mins = new Date().getMinutes();
-    var hours = new Date().getUTCHours(); // needed to display date correctly in msg
-    var offset = new Date().getDay() * OfsT;
+    var hours = new Date().getUTCHours(); // needed to display date correctly in msg and offset properly
+     var offset = dayOffset[new Date().getDay()];
     hours = ((hours+2) % 24)
     mins -= mins%4;
     var list = ' ';
     var Elapsed = mins + (hours*60) + offset;
     var position = (Elapsed % RotLth) / 4;
+    if(offset != 0 && hours == 0 ||  24){ 
+        position += (Rotation.length-1) - offset;
+    }
          var i = 0; 
          var SaneMin= "";                   
         do{
