@@ -4,7 +4,7 @@ empty right now. Maybe collect data for tier 6 and below, and also cold war.
 
 
 var Discord = require('discord.io');
-var logger = require('winston');
+/*var logger = require('winston');
 //var auth = require('./auth.json');
 
 // Configure logger settings
@@ -13,17 +13,13 @@ logger.add(new logger.transports.Console, {
     colorize: true
 });
 logger.level = 'debug';
-// Initialize Discord Bot
-//var bot = new Discord.Client()
-///bot.login(process.env.BKBT_TOKEN)
+*/
 var bot = new Discord.Client({
    token: process.env.BKBT_TOKEN,
    autorun: true});
 
 bot.on('ready', function (evt) {
-    logger.info('Connected');
-    logger.info('Logged in as: ');
-    logger.info(bot.username);
+console.log('Logged in as %s - %s\n', bot.username, bot.id);
 });
 
 var RotLth = 112;
