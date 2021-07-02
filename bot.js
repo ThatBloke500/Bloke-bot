@@ -111,7 +111,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     message: msg});                
             break;
             case "sch":
-                var list = exp(Rotnew);
+                var list = Exp(Rotnew);
                     bot.sendMessage({
                     to: channelID,
                     message: "Timezone: UTC+2, maps accurate for tier 9 and 10: \n" + list});
