@@ -102,6 +102,40 @@ function mapListing(Rotation){
     
     } 
 
+var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5] // elapsed days * minutes this week
+function Exp(Rotation){
+    var mins = new Date().getMinutes();
+    var hours = new Date().getUTCHours(); // needed to display date correctly in msg and offset properly
+     var offset = ElMins[new Date().getDay()];
+    hours = ((hours+2) % 24)
+    mins -= mins%4;
+    var list = ' ';
+    var Elapsed = mins + (hours*60) + offset;
+    var position = (Elapsed % RotLth) / 4;
+         var i = 0; 
+         var SaneMin= "";                   
+        do{
+            if(mins < 10){SaneMin = ('0' + mins)}
+            else{SaneMin = mins + ''}
+            if(position > Rotation.length-1){ position = 0} // make sure positon doesnt exceeed Rotation array length
+        list += "` " + hours + ":" + SaneMin  +"  " + Rotation[position] + "` \n";
+            if(mins >= 56) { 
+                mins = 0; //reset to continue iteration past one hour;
+                hours < 23 ? hours++ : hours = 0; 
+            }
+                else{mins += 4;} // readies for next iteration
+
+            i++;
+            position++;
+        }while(i <= Rotation.length-1)
+    return list;
+    
+    } 
+
+
+
+
+
 
 bot.on('message', function (user, userID, channelID, message, evt) {
     // Our bot needs to know if it will execute a command
@@ -112,18 +146,18 @@ bot.on('message', function (user, userID, channelID, message, evt) {
        
         args = args.splice(1);
         switch(cmd) {
+            case 'exp':
+                var list = Exp(Rotnew);
+                    bot.sendMessage({
+                    to: channelID,
+                    message: "Experimental rework: \n" + list});
+                
             case 'nxt' || "nxt":
                 var msg = nextmaps(Rotnew);
                 bot.sendMessage({
                     to: channelID,
                     message: msg});                
             break;
-/*            case 'nxt6':
-                var msg = nextmaps(Rotnew);
-                bot.sendMessage({
-                    to: channelID,
-                    message: msg});
-                break;*/
             case "sch":
                 var list = mapListing(Rotnew);
                     bot.sendMessage({
