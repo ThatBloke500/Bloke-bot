@@ -56,7 +56,7 @@ var Rotnew = ["Ghost Town",
 "Kaunas",
 "El Alamain"]
 
-dayOffset = [23,0,3,7,11,16,19] //sun, mon, tue, wed, -> etc.
+dayOffset = [23,0,3,7,11,15,19] //sun, mon, tue, wed, -> etc.
 
 function nextmaps(Rotation){
      var offset = dayOffset[new Date().getDay()];
