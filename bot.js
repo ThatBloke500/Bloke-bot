@@ -1,19 +1,10 @@
 /*TODO:
-empty right now. Maybe collect data for tier 6 and below, and also cold war.
+Collect data for tier 6 and below, and also cold war. Monitor for edge-case bugs.
 */
 
 
 var Discord = require('discord.io');
-/*var logger = require('winston');
-//var auth = require('./auth.json');
 
-// Configure logger settings
-logger.remove(logger.transports.Console);
-logger.add(new logger.transports.Console, {
-    colorize: true
-});
-logger.level = 'debug';
-*/
 var bot = new Discord.Client({
    token: process.env.BKBT_TOKEN,
    autorun: true});
@@ -33,7 +24,7 @@ var Rotnew = ["Ghost Town",
 "Westfield",	
 "Himmelsdorf",	
 "Ghost Town",	
-"Sunset Coust",	
+"Sunset Coast",	
 "Malinovka",
 "Overlord",
 "Fisherman's Bay",
@@ -52,61 +43,22 @@ var Rotnew = ["Ghost Town",
 "Kaunas",
 "El Alamain"]
 
-dayOffset = [23,0,3,7,11,15,19] //sun, mon, tue, wed, -> etc.
-
+dayOffset = [23,0,3,7,11,15,19] 
+var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5]//sun, mon, tue, wed, -> etc.
 function nextmaps(Rotation){
-     var offset = dayOffset[new Date().getDay()];
-    var hours = new Date().getUTCHours() + 2;
-    var Elapsed = new Date().getMinutes() + (( hours) * 60);
+     var offset = ElMins[new Date().getDay()];
+    var hours = ((new Date().getUTCHours() + 2)%24) *60;
+    var Elapsed = new Date().getMinutes() + hours + offset;
     Elapsed -= Elapsed%4
     var position = (Elapsed % RotLth) / 4;
-    if(offset != 0 && hours == 0 ||  24){ 
-        position += (Rotation.length-1) - offset;
-        position %= (Rotation.length-1);
-    }
  return "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < (Rotation.length-1)? position +1 : 0] + "`";
     
 }
 
-
-function mapListing(Rotation){
-    var mins = new Date().getMinutes();
-    var hours = new Date().getUTCHours(); // needed to display date correctly in msg and offset properly
-     var offset = dayOffset[new Date().getDay()];
-    hours = ((hours+2) % 24)
-    mins -= mins%4;
-    var list = ' ';
-    var Elapsed = mins + (hours*60);
-    var position = (Elapsed % RotLth) / 4;
-    if(offset != 0 && hours == 0 ||  24){ 
-        position += (Rotation.length-1) - offset;
-        position %= (Rotation.length-1);
-    }
-         var i = 0; 
-         var SaneMin= "";                   
-        do{
-            if(mins < 10){SaneMin = ('0' + mins)}
-            else{SaneMin = mins + ''}
-            if(position > Rotation.length-1){ position = 0} // make sure positon doesnt exceeed Rotation array length
-        list += "` " + hours + ":" + SaneMin  +"  " + Rotation[position] + "` \n";
-            if(mins >= 56) { 
-                mins = 0; //reset to continue iteration past one hour;
-                hours < 23 ? hours++ : hours = 0; 
-            }
-                else{mins += 4;} // readies for next iteration
-
-            i++;
-            position++;
-        }while(i <= Rotation.length-1)
-    return list;
-    
-    } 
-
-var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5] // elapsed days * minutes this week
 function Exp(Rotation){
     var mins = new Date().getMinutes();
     var hours = new Date().getUTCHours(); // needed to display date correctly in msg and offset properly
-     var offset = ElMins[new Date().getDay()];
+     var offset = ElMins[new Date().getDay()]; //removes the need for daily offseting by making each day count towards % 28. I hope this is what keeps it working.
     hours = ((hours+2) % 24)
     mins -= mins%4;
     var list = ' ';
@@ -151,7 +103,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     bot.sendMessage({
                     to: channelID,
                     message: "Experimental rework: \n" + list});
-                
+                break;
             case 'nxt' || "nxt":
                 var msg = nextmaps(Rotnew);
                 bot.sendMessage({
@@ -159,17 +111,11 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     message: msg});                
             break;
             case "sch":
-                var list = mapListing(Rotnew);
+                var list = exp(Rotnew);
                     bot.sendMessage({
                     to: channelID,
                     message: "Timezone: UTC+2, maps accurate for tier 9 and 10: \n" + list});
-                break;
-            case "sch6":
-                var list = mapListing(Rotnew);
-                bot.sendMessage({
-                to: channelID,
-                message: "Timezone: UTC+2 \n" + list + "WARNING: Cold war maps are replaced, no data on what with."});
-           
+                break;         
                 }              
          }
 });
