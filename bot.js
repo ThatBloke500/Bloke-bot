@@ -46,16 +46,13 @@ var Rotnew = ["Ghost Town",
 //dayOffset = [23,0,3,7,11,15,19] 
 var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5]//sun, mon, tue, wed, -> etc.
 function nextmaps(Rotation){
-    var hours = (new Date().getUTCHours() + 2);
-    var day = new Date().getDay()
-    if(hours > 23){
-        hours %=24
-        if(day == 6){day=0}
-          else{day++;}
-    }
+   var CurrDate = new Date(Date.now());
+   CurrDate.setTime(CurrDate.getTime() + (2*60*60*1000));
+    var hours = (CurrDate);
+    var day = CurrDate.getDay()
     var offset = ElMins[day];
     hours*=60
-    var Elapsed = new Date().getMinutes() + hours + offset;
+    var Elapsed = CurrDate.getMinutes() + hours + offset;
     Elapsed -= Elapsed%4
     var position = (Elapsed % RotLth) / 4;
  return "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < (Rotation.length-1)? position +1 : 0] + "`";
@@ -63,10 +60,11 @@ function nextmaps(Rotation){
 }
 
 function Exp(Rotation){
-    var mins = new Date().getMinutes();
-    var hours = new Date().getUTCHours(); // needed to display date correctly in msg and offset properly
-     var offset = ElMins[new Date().getDay()]; //removes the need for daily offseting by making each day count towards % 28. I hope this is what keeps it working.
-    hours = ((hours+2) % 24)
+   var CurrDate = new Date(Date.now());
+   CurrDate.setTime(CurrDate.getTime() + (2*60*60*1000));
+    var mins =  CurrDate.getMinutes();
+    var hours =  CurrDate.getHours(); // needed to display date correctly in msg and offset properly
+     var offset = ElMins[CurrDate.getDay()]; //removes the need for daily offseting by making each day count towards % 28. I hope this is what keeps it working
     mins -= mins%4;
     var list = ' ';
     var Elapsed = mins + (hours*60) + offset;
