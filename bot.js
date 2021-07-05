@@ -48,7 +48,7 @@ var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5]//sun, mon, tue, wed, -> e
 function nextmaps(Rotation){
    var CurrDate = new Date(Date.now());
    CurrDate.setTime(CurrDate.getTime() + (2*60*60*1000));
-    var hours = (CurrDate);
+    var hours = (CurrDate.getHours());
     var day = CurrDate.getDay()
     var offset = ElMins[day];
     hours*=60
