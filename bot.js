@@ -46,7 +46,7 @@ var Rotnew = ["Ghost Town",
 //dayOffset = [23,0,3,7,11,15,19] 
 var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5]//sun, mon, tue, wed, -> etc.
 function nextmaps(Rotation){
-    var hours = (new Date().getUTCHours() + 2) *60;
+    var hours = (new Date().getUTCHours() + 2);
     var day = new Date().getDay()
     if(hours > 23){
         hours %=24
