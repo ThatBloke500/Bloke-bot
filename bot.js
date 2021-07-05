@@ -43,11 +43,18 @@ var Rotnew = ["Ghost Town",
 "Kaunas",
 "El Alamain"]
 
-dayOffset = [23,0,3,7,11,15,19] 
+//dayOffset = [23,0,3,7,11,15,19] 
 var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5]//sun, mon, tue, wed, -> etc.
 function nextmaps(Rotation){
-     var offset = ElMins[new Date().getDay()];
-    var hours = ((new Date().getUTCHours() + 2)%24) *60;
+    var hours = (new Date().getUTCHours() + 2) *60;
+    var day = new Date().getDay()
+    if(hours > 23){
+        hours %=24
+        if(day == 6){day=0}
+          else{day++;}
+    }
+    var offset = ElMins[day];
+    hours*=60
     var Elapsed = new Date().getMinutes() + hours + offset;
     Elapsed -= Elapsed%4
     var position = (Elapsed % RotLth) / 4;
