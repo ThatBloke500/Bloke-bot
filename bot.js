@@ -51,11 +51,13 @@ function nextmaps(Rotation){
     var hours = (CurrDate.getHours());
     var day = CurrDate.getDay()
     var offset = ElMins[day];
+   var timeStep = CurrDate.getMinutes() - (CurrDate.getMinutes() % 4)
+   var overtime =  (timeStep+4) - CurrDate.getMinutes()
     hours*=60
     var Elapsed = CurrDate.getMinutes() + hours + offset;
     Elapsed -= Elapsed%4
     var position = (Elapsed % RotLth) / 4;
- return "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < (Rotation.length-1)? position +1 : 0] + "`";
+ return "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < (Rotation.length-1)? position +1 : 0] + "` \n Time till switch: **" timeStep "** minutes";
     
 }
 
