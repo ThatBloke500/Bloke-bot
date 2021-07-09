@@ -20,7 +20,7 @@ var Rotnew = ["Ghost Town",
 "Steppes",
 "Sand River",
 "Kasserine",
-"Dezful",
+"Dezful (Mines)",
 "Westfield",	
 "Himmelsdorf",	
 "Ghost Town",	
@@ -29,19 +29,21 @@ var Rotnew = ["Ghost Town",
 "Overlord",
 "Fisherman's Bay",
 "El Alamain",
-"Cao Bang",
+"Cao Bang (Port)",
 "Arctic Region"	,
 "Pilsen",
-"Fredvang",	
+"Fredvang (Himmelsdorf)",	
 "Mountain Pass",
 "Cliff",
 "Vineyard",	
 "Westfield",	
 "Prohorovka",
 "Overlord",
-"Mannheim",
+"Mannheim (Abbey)",
 "Kaunas",
 "El Alamain"]
+
+var reminder = "/n **(mapname)** = this map appears when playing prem MM tier 7s and below, or if you are top tier at tier 8. "
 
 //dayOffset = [23,0,3,7,11,15,19] 
 var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5]//sun, mon, tue, wed, -> etc.
@@ -57,7 +59,7 @@ function nextmaps(Rotation){
     var Elapsed = CurrDate.getMinutes() + hours + offset;
     Elapsed -= Elapsed%4
     var position = (Elapsed % RotLth) / 4;
- return "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < (Rotation.length-1)? position +1 : 0] + "` \n Time till switch: **" + overtime + "** minutes";
+ return reminder + "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < (Rotation.length-1)? position +1 : 0] + "` \n Time till switch: **" + overtime + "** minutes";
     
 }
 
@@ -121,7 +123,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                 var list = Exp(Rotnew);
                     bot.sendMessage({
                     to: channelID,
-                    message: "Timezone: UTC+2, maps accurate for tier 9 and 10: \n" + list});
+                    message: "Timezone: UTC+2, maps accurate for tier 9 and 10: \n" + list + reminder});
                 break;         
                 }              
          }
