@@ -43,7 +43,7 @@ var Rotnew = ["Ghost Town",
 "Kaunas",
 "El Alamain"]
 
-var reminder = "/n **(mapname)** = this map appears when playing prem MM tier 7s and below, or if you are top tier at tier 8. "
+var reminder = "\n **(mapname)** = *appears when playing tier 6 and below, or if you are top tier at tier 8.* "
 
 //dayOffset = [23,0,3,7,11,15,19] 
 var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5]//sun, mon, tue, wed, -> etc.
@@ -59,7 +59,7 @@ function nextmaps(Rotation){
     var Elapsed = CurrDate.getMinutes() + hours + offset;
     Elapsed -= Elapsed%4
     var position = (Elapsed % RotLth) / 4;
- return reminder + "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < (Rotation.length-1)? position +1 : 0] + "` \n Time till switch: **" + overtime + "** minutes";
+ return "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < (Rotation.length-1)? position +1 : 0] + "` \n Time till switch: **" + overtime + "** minutes" + reminder;
     
 }
 
