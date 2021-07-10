@@ -43,7 +43,7 @@ var Rotnew = ["Ghost Town",
 "Kaunas",
 "El Alamain"]
 
-var reminder = "\n **(mapname)** = *appears when playing tier 6 and below, or if you are top tier at tier 8.* "
+var reminder = "\n **(mapname)** = *low tier map (e.g.tier 6)* "
 
 //dayOffset = [23,0,3,7,11,15,19] 
 var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5]//sun, mon, tue, wed, -> etc.
