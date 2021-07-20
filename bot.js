@@ -107,19 +107,12 @@ bot.on('message', function (user, userID, channelID, message, evt) {
        
         args = args.splice(1);
         switch(cmd) {
-            case 'exp':
-                var list = Exp(Rotnew);
-                    bot.sendMessage({
-                    to: channelID,
-                    message: "Experimental rework: \n" + list});
-                break;
-            case 'nxt' || "nxt":
+            /*case 'nxt' || "nxt":
                 var msg = nextmaps(Rotnew);
                 bot.sendMessage({
                     to: channelID,
-                    message: msg});                
-            break;
-            case "sch":
+                    message: msg});*/                
+            case "sch" || "nxt":
                 var list = Exp(Rotnew);
                     bot.sendMessage({
                     to: channelID,
