@@ -113,12 +113,16 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     to: channelID,
                     message: msg});*/                
             case "sch":
-            case:"nxt":
                 var list = Exp(Rotnew);
                     bot.sendMessage({
                     to: channelID,
                     message: "Timezone: UTC+2, maps accurate for tier 9 and 10: \n" + list + reminder});
                 break;
+              
+           case "nxt": 
+              bot.sendMessage({
+                    to: channelID,
+                    message:"Deprecated, use !sch. Timezone conversion is as simple as ignoring the hours and looking at the minutes"});
               break;
                 }              
          }
