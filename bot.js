@@ -112,12 +112,14 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                 bot.sendMessage({
                     to: channelID,
                     message: msg});*/                
-            case "sch" || "nxt":
+            case "sch":
+            case:"nxt":
                 var list = Exp(Rotnew);
                     bot.sendMessage({
                     to: channelID,
                     message: "Timezone: UTC+2, maps accurate for tier 9 and 10: \n" + list + reminder});
-                break;         
+                break;
+              break;
                 }              
          }
 });
