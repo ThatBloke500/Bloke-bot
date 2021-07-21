@@ -43,11 +43,10 @@ var Rotnew = ["Ghost Town",
 "Kaunas",
 "El Alamain"]
 
-var reminder = "\n **(mapname)** = *low tier map (e.g.tier 6)* "
+var reminder = "\n **CW map (normal map)** = Tier 9(tier 6)"
 
-//dayOffset = [23,0,3,7,11,15,19] 
 var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5]//sun, mon, tue, wed, -> etc.
-function nextmaps(Rotation){
+/*function nextmaps(Rotation){
    var CurrDate = new Date(Date.now());
    CurrDate.setTime(CurrDate.getTime() + (2*60*60*1000));
     var hours = (CurrDate.getHours());
@@ -61,9 +60,13 @@ function nextmaps(Rotation){
     var position = (Elapsed % RotLth) / 4;
  return "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < (Rotation.length-1)? position +1 : 0] + "` \n Time till switch: **" + overtime + "** minutes" + reminder;
     
-}
+}*/
 
-function Exp(Rotation){
+function Exp(Rotation, count, SendOffset){
+   var overtime = " ";
+   if(SendOffset){
+      var timeStep = CurrDate.getMinutes() - (CurrDate.getMinutes() % 4) // cleans up modulo
+      var overtime = "Time till switch: **" + ((timeStep+4) - CurrDate.getMinutes()) + "** minutes"} //add time till next switch.... this could be cleaner probably
    var CurrDate = new Date(Date.now());
    CurrDate.setTime(CurrDate.getTime() + (2*60*60*1000));
     var mins =  CurrDate.getMinutes();
@@ -88,13 +91,10 @@ function Exp(Rotation){
 
             i++;
             position++;
-        }while(i <= Rotation.length-1)
-    return list;
+        }while(i <= count-1)
+    return list + "\n" + overtime; //default overtime value is nothing. when used by nxt it switches to tell the next time until X
     
     } 
-
-
-
 
 
 
@@ -104,25 +104,39 @@ bot.on('message', function (user, userID, channelID, message, evt) {
     if (message.substring(0, 1) == '!') {
         var args = message.substring(1).split(' ');
         var cmd = args[0];
+        
        
-        args = args.splice(1);
         switch(cmd) {
-            /*case 'nxt' || "nxt":
-                var msg = nextmaps(Rotnew);
-                bot.sendMessage({
+            /*case "help":
+            bot.sendMessage({
                     to: channelID,
-                    message: msg});*/                
+                    message:"This is a map bot for WoT console's WW2 mode, Cold war is currently unsupported.\n
+            `nxt` = "})
+            */                
             case "sch":
-                var list = Exp(Rotnew);
+                var list = Exp(Rotnew, Rotnew.length, false);
                     bot.sendMessage({
                     to: channelID,
-                    message: "Timezone: UTC+2, maps accurate for tier 9 and 10: \n" + list + reminder});
+                    message: "Timezone: UTC+2, tier 8s and 7s will experience variation.\n" + list + reminder});
                 break;
               
-           case "nxt": 
+           case "nxt":
+           var paramX = parseInt(args[1]);
+           var warn = false
+           if(Number.isNaN(paramX) || paramX > 16 || paramX < 0){
+           paramX = 3;
+           warn = true;} // handles people putting in junk data or trying to break the bot
+              
+              var list;
+              list = Exp(Rotnew, paramX, true)
+              if(warn){
               bot.sendMessage({
                     to: channelID,
-                    message:"Deprecated, use !sch. Timezone conversion is as simple as ignoring the hours and looking at the minutes"});
+                    message:"**No Number found / NUM out of range (max 16) - defaulting to 3 maps**\n" + list + reminder});}
+              else{
+                 bot.sendMessage({
+                    to: channelID,
+                    message:"UTC+2:\n" + list + reminder});}
               break;
                 }              
          }
