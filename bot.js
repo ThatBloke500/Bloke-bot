@@ -64,10 +64,11 @@ var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5]//sun, mon, tue, wed, -> e
 
 function Exp(Rotation, count, SendOffset){
    var overtime = " ";
+   var CurrDate = new Date(Date.now());
    if(SendOffset){
       var timeStep = CurrDate.getMinutes() - (CurrDate.getMinutes() % 4) // cleans up modulo
       var overtime = "Time till switch: **" + ((timeStep+4) - CurrDate.getMinutes()) + "** minutes"} //add time till next switch.... this could be cleaner probably
-   var CurrDate = new Date(Date.now());
+
    CurrDate.setTime(CurrDate.getTime() + (2*60*60*1000));
     var mins =  CurrDate.getMinutes();
     var hours =  CurrDate.getHours(); // needed to display date correctly in msg and offset properly
