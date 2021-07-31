@@ -1,5 +1,13 @@
-/*TODO:
-Collect data for tier 6 and below, and also cold war. Monitor for edge-case bugs.
+/*Maths:
+Calculation of map rotation:
+Get the time in 24-hour format, get the day number.
+split time into mins(clean up minutes using mins modulo 4 to remove excess), set hours equal to UTC+2 and then multiply hours by 60. day switching is accounted for.
+Use the day number to lookup the minutes passed before midnight of the same day (to offset the rotation correctly)
+Add all of this together.
+Take this total elapsed time and Modulo it by the rotation length (28) then divide it by 4 (minutes till map change) to get the position.
+Now this position can iterate over the Rotation list array to make a text message for discord, adding 4 minutes and +1 to position to each time listed as it loops over.
+This can and has been all done by hand. The bot is simply a slave to this process, much like the origin of the name robot.
+Simple maths really.
 */
 
 
@@ -7,13 +15,13 @@ var Discord = require('discord.io');
 
 var bot = new Discord.Client({
    token: process.env.BKBT_TOKEN,
-   autorun: true});
+   autorun: true}); //BKBT_TOKEN is stored on the server and is the super secret bot-specific token for injecting code. I am not dumb enough to keep it as a plain text value.
 
 bot.on('ready', function (evt) {
 console.log('Logged in as %s - %s\n', bot.username, bot.id);
 });
 
-var RotLth = 112;
+var RotLth = 112; //rotation length * 4. easier to read code if I have it as a preprocessed global value
 var Rotnew = ["Ghost Town",	
 "Highway",
 "El Halluf",
@@ -42,34 +50,18 @@ var Rotnew = ["Ghost Town",
 "Mannheim (Abbey)",
 "Kaunas",
 "El Alamain"]
+// normally I'd store something like this^ in a database or hell a google sheet, but it's faster to reference directly and less messy too on the whole data scraping issue.
 
 var reminder = "\n **CW map (normal map)** = Tier 9(tier 6)"
-
-var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5]//sun, mon, tue, wed, -> etc.
-/*function nextmaps(Rotation){
-   var CurrDate = new Date(Date.now());
-   CurrDate.setTime(CurrDate.getTime() + (2*60*60*1000));
-    var hours = (CurrDate.getHours());
-    var day = CurrDate.getDay()
-    var offset = ElMins[day];
-   var timeStep = CurrDate.getMinutes() - (CurrDate.getMinutes() % 4)
-   var overtime =  (timeStep+4) - CurrDate.getMinutes()
-    hours*=60
-    var Elapsed = CurrDate.getMinutes() + hours + offset;
-    Elapsed -= Elapsed%4
-    var position = (Elapsed % RotLth) / 4;
- return "Current map is: `" + Rotation[position] + "` next map is: `" + Rotation[position < (Rotation.length-1)? position +1 : 0] + "` \n Time till switch: **" + overtime + "** minutes" + reminder;
-    
-}*/
+var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5]//sun, mon, tue, wed, -> etc. JS days have sunday first as = 0 instead of something sane like 6.
 
 function Exp(Rotation, count, SendOffset){
-   var overtime = " ";
+   var overtime = " "; // this is just a var to show to users how long it'll be until the next map switch relative to their current time
    var CurrDate = new Date(Date.now());
    if(SendOffset){
-      var timeStep = CurrDate.getMinutes() - (CurrDate.getMinutes() % 4) // cleans up modulo
+      var timeStep = CurrDate.getMinutes() - (CurrDate.getMinutes() % 4) // cleans up time with modulo
       var overtime = "Time till switch: **" + ((timeStep+4) - CurrDate.getMinutes()) + "** minutes"} //add time till next switch.... this could be cleaner probably
-
-   CurrDate.setTime(CurrDate.getTime() + (2*60*60*1000));
+   CurrDate.setTime(CurrDate.getTime() + (2*60*60*1000)); // add 2 hours to make it align with UTC+2.
     var mins =  CurrDate.getMinutes();
     var hours =  CurrDate.getHours(); // needed to display date correctly in msg and offset properly
      var offset = ElMins[CurrDate.getDay()]; //removes the need for daily offseting by making each day count towards % 28. I hope this is what keeps it working
@@ -82,7 +74,7 @@ function Exp(Rotation, count, SendOffset){
         do{
             if(mins < 10){SaneMin = ('0' + mins)}
             else{SaneMin = mins + ''}
-            if(position > Rotation.length-1){ position = 0} // make sure positon doesnt exceeed Rotation array length
+            if(position > Rotation.length-1){ position = 0} // make sure position doesnt exceeed Rotation array length
         list += "` " + hours + ":" + SaneMin  +"  " + Rotation[position] + "` \n";
             if(mins >= 56) { 
                 mins = 0; //reset to continue iteration past one hour;
@@ -100,20 +92,13 @@ function Exp(Rotation, count, SendOffset){
 
 
 bot.on('message', function (user, userID, channelID, message, evt) {
-    // Our bot needs to know if it will execute a command
-    // It will listen for messages that will start with `!`
+//where !sch, !nxt etc. are heard.
     if (message.substring(0, 1) == '!') {
         var args = message.substring(1).split(' ');
         var cmd = args[0];
         
        
-        switch(cmd) {
-            /*case "help":
-            bot.sendMessage({
-                    to: channelID,
-                    message:"This is a map bot for WoT console's WW2 mode, Cold war is currently unsupported.\n
-            `nxt` = "})
-            */                
+        switch(cmd) {               
             case "sch":
                 var list = Exp(Rotnew, Rotnew.length, false);
                     bot.sendMessage({
@@ -142,6 +127,8 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                 }              
          }
 });
+
+
 
 
 
