@@ -90,7 +90,7 @@ function mapCaller(){
    var NAvalid = Math.abs(time - MapNA[1]) < 230000 ? "Valid" : "Invalid";
    var EUvalid =  Math.abs(time - MapEU[1]) < 230000 ? "Valid" :  "Invalid"; // 4mins *60*1000 = 240,000 ms PAIN.
 
-return "Last recorded maps were: \n NA: ```" + MapNA[0] + ": " NAvalid + "\n EU: " + MapEU[0] + ": " + EUvalid + "\n next switch:" + timeleft + " mins```"; 
+return "Last recorded maps were: \n NA: ```" + MapNA[0] + ": " + NAvalid + "\n EU: " + MapEU[0] + ": " + EUvalid + "\n next switch:" + timeleft + " mins```"; 
 }
 
 
