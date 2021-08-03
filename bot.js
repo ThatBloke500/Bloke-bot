@@ -21,47 +21,8 @@ bot.on('ready', function (evt) {
 console.log('Logged in as %s - %s\n', bot.username, bot.id);
 });
 
-var Rotnew = ["no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data"];
-var RotLth = 112; //rotation length * 4. easier to read code if I have it as a preprocessed global value
-
-// normally I'd store something like this^ in a database or hell a google sheet, but it's faster to reference directly and less messy too on the whole data scraping issue.
-
-/*
-function Exp(Rotation, count, SendOffset){
-   var overtime = " "; // this is just a var to show to users how long it'll be until the next map switch relative to their current time
-   var CurrDate = new Date(Date.now());
-   if(SendOffset){
-      var timeStep = CurrDate.getMinutes() - (CurrDate.getMinutes() % 4) // cleans up time with modulo
-      var overtime = "Time till switch: **" + ((timeStep+4) - CurrDate.getMinutes()) + "** minutes"} //add time till next switch.... this could be cleaner probably
-   CurrDate.setTime(CurrDate.getTime() + (2*60*60*1000)); // add 2 hours to make it align with UTC+2.
-    var mins =  CurrDate.getMinutes();
-    var hours =  CurrDate.getHours(); // needed to display date correctly in msg and offset properly
-     var offset = ElMins[CurrDate.getDay()]; //removes the need for daily offseting by making each day count towards % 28. I hope this is what keeps it working
-    mins -= mins%4;
-    var list = ' ';
-    var Elapsed = mins + (hours*60) + offset;
-    var position = (Elapsed % RotLth) / 4;
-         var i = 0; 
-         var SaneMin= "";                   
-        do{
-            if(mins < 10){SaneMin = ('0' + mins)}
-            else{SaneMin = mins + ''}
-            if(position > Rotation.length-1){ position = 0} // make sure position doesnt exceeed Rotation array length
-        list += "` " + hours + ":" + SaneMin  +"  " + Rotation[position] + "` \n";
-            if(mins >= 56) { 
-                mins = 0; //reset to continue iteration past one hour;
-                hours < 23 ? hours++ : hours = 0; 
-            }
-                else{mins += 4;} // readies for next iteration
-
-            i++;
-            position++;
-        }while(i <= count-1)
-    return list + "\n" + overtime; //default overtime value is nothing. when used by nxt it switches to tell the next time until X
-    
-    } */
-
-
+var Rotnew = ["no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data"];
+var RotLth = 112; //rotation length * 4.
 
 var MapNA = ["Mannheim", new Date('August 19, 1975 23:15:30')] // mutable global variable to save map name - check not null or empty. [map, date] format
 var MapEU = ["Mannheim", new Date('August 19, 1971 23:15:30')] // same as above
@@ -90,7 +51,7 @@ function mapCaller(){
    var NAvalid = Math.abs(time - MapNA[1]) < 230000 ? "Valid" : "Invalid";
    var EUvalid =  Math.abs(time - MapEU[1]) < 230000 ? "Valid" :  "Invalid"; // 4mins *60*1000 = 240,000 ms PAIN.
 
-return "Last recorded maps were: \n NA: `" + MapNA[0] + ": " + NAvalid + "` \n EU: `" + MapEU[0] + ": " + EUvalid + "`\n next switch:" + timeleft + " mins`"; 
+return "Last recorded maps were: \n NA: `" + MapNA[0] + ": " + NAvalid + "` \n EU: `" + MapEU[0] + ": " + EUvalid + "`\n next switch: **" + timeleft + " mins **"; 
 }
 
 
@@ -182,6 +143,42 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 "Mannheim (Abbey)",
 "Kaunas",
 "El Alamain"]*/
+
+
+/*
+function Exp(Rotation, count, SendOffset){
+   var overtime = " "; // this is just a var to show to users how long it'll be until the next map switch relative to their current time
+   var CurrDate = new Date(Date.now());
+   if(SendOffset){
+      var timeStep = CurrDate.getMinutes() - (CurrDate.getMinutes() % 4) // cleans up time with modulo
+      var overtime = "Time till switch: **" + ((timeStep+4) - CurrDate.getMinutes()) + "** minutes"} //add time till next switch.... this could be cleaner probably
+   CurrDate.setTime(CurrDate.getTime() + (2*60*60*1000)); // add 2 hours to make it align with UTC+2.
+    var mins =  CurrDate.getMinutes();
+    var hours =  CurrDate.getHours(); // needed to display date correctly in msg and offset properly
+     var offset = ElMins[CurrDate.getDay()]; //removes the need for daily offseting by making each day count towards % 28. I hope this is what keeps it working
+    mins -= mins%4;
+    var list = ' ';
+    var Elapsed = mins + (hours*60) + offset;
+    var position = (Elapsed % RotLth) / 4;
+         var i = 0; 
+         var SaneMin= "";                   
+        do{
+            if(mins < 10){SaneMin = ('0' + mins)}
+            else{SaneMin = mins + ''}
+            if(position > Rotation.length-1){ position = 0} // make sure position doesnt exceeed Rotation array length
+        list += "` " + hours + ":" + SaneMin  +"  " + Rotation[position] + "` \n";
+            if(mins >= 56) { 
+                mins = 0; //reset to continue iteration past one hour;
+                hours < 23 ? hours++ : hours = 0; 
+            }
+                else{mins += 4;} // readies for next iteration
+
+            i++;
+            position++;
+        }while(i <= count-1)
+    return list + "\n" + overtime; //default overtime value is nothing. when used by nxt it switches to tell the next time until X
+    
+    } */
 
 
 
