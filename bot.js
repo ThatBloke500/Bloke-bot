@@ -22,12 +22,11 @@ console.log('Logged in as %s - %s\n', bot.username, bot.id);
 });
 
 var Rotnew = ["no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data"];
-
 var RotLth = 112; //rotation length * 4. easier to read code if I have it as a preprocessed global value
 
 // normally I'd store something like this^ in a database or hell a google sheet, but it's faster to reference directly and less messy too on the whole data scraping issue.
 
-
+/*
 function Exp(Rotation, count, SendOffset){
    var overtime = " "; // this is just a var to show to users how long it'll be until the next map switch relative to their current time
    var CurrDate = new Date(Date.now());
@@ -60,43 +59,38 @@ function Exp(Rotation, count, SendOffset){
         }while(i <= count-1)
     return list + "\n" + overtime; //default overtime value is nothing. when used by nxt it switches to tell the next time until X
     
-    } 
+    } */
 
 
 
-var MapNA = ["Mannheim",new Date('August 19, 1975 23:15:30')] // mutable global variable to save map name - check not null or empty. [map, date] format
-var MapEU = ["Mannheim",new Date('August 19, 1971 23:15:30')] // same as above
-var timeRemEU
-var timeRemNA
+var MapNA = ["Mannheim", new Date('August 19, 1975 23:15:30')] // mutable global variable to save map name - check not null or empty. [map, date] format
+var MapEU = ["Mannheim", new Date('August 19, 1971 23:15:30')] // same as above
 var reminder = "\n **CW map (normal map)** = Tier 9(tier 6)"
-var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5]//sun, mon, tue, wed, -> etc. JS days have sunday first as = 0 instead of something sane like 6.
+//var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5]//sun, mon, tue, wed, -> etc. JS days have sunday first as = 0 instead of something sane like 6.
 
 
 function sniper(map, server){
-   if(map.length < 3) {return;} //check the name isnt less than 3 chars. not the best data check but whatever. 
+   if(map.length < 3){return;} //check the name isnt less than 3 chars. not the best data check but whatever. 
    var CurrDate = new Date(Date.now());
    var backwards = CurrDate.getMinutes() % 4
-   //var timeStep = CurrDate.getMinutes() - (CurrDate.getMinutes() % 4)
-   //var overtime =  (timeStep+4) - CurrDate.getMinutes()
    CurrDate.setTime(CurrDate.getTime() - (backwards*60*1000));
    if(server="EU"){
       MapEU[0] = map
-      MapEU[1] = CurrDate;
-                  
-                  } 
+      MapEU[1] = CurrDate; 
+      } 
    else if(server="NA"){
       MapNA[0] = map
-      MapNA[1] = CurrDate;}
-   
-} 
+      MapNA[1] = CurrDate;
+      }
+}
 
 function mapCaller(){
-   var time = new Date(Date.now())
-   var timeleft = 4 - (time.getMinutes %4);
+   var time = new Date(Date.now());
+   var timeleft = 4 - (time.getMinutes % 4);
    var NAvalid = Math.abs(time - MapNA[1]) < 230000 ? "Valid" : "Invalid";
    var EUvalid =  Math.abs(time - MapEU[1]) < 230000 ? "Valid" :  "Invalid"; // 4mins *60*1000 = 240,000 ms PAIN.
 
-return "Last recorded maps were: \n NA: ```" + MapNA[0] + ": " NAvalid + "\n EU: " + MapEU[0] +": " + EUvalid + "\n next switch:" + timeleft + " mins```"; 
+return "Last recorded maps were: \n NA: ```" + MapNA[0] + ": " NAvalid + "\n EU: " + MapEU[0] + ": " + EUvalid + "\n next switch:" + timeleft + " mins```"; 
 }
 
 
@@ -107,7 +101,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
     if (message.substring(0, 1) == '!') {
         var args = message.substring(1).split(' ');
         var cmd = args[0];
-        if(args[2] != null){args[1]+= " " + args[2]} //combine the two words of maps like El halluf alamein into one with a bit of gorey code.
+        //if(args[2] != null){args[1]+= " " + args[2]} //combine the two words of maps like El halluf alamein into one with a bit of gorey code.
        
         switch(cmd) {   
            case "na":
