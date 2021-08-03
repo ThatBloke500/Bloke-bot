@@ -21,8 +21,10 @@ bot.on('ready', function (evt) {
 console.log('Logged in as %s - %s\n', bot.username, bot.id);
 });
 
+var Rotnew = ["no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data"];
+
 var RotLth = 112; //rotation length * 4. easier to read code if I have it as a preprocessed global value
-var Rotnew = ["Ghost Town",	
+var Rotold = ["Ghost Town",	
 "Highway",
 "El Halluf",
 "Steppes",
