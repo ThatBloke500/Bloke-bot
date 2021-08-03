@@ -35,11 +35,11 @@ function sniper(map, server){
    var CurrDate = new Date(Date.now());
    var backwards = CurrDate.getMinutes() % 4
    CurrDate.setTime(CurrDate.getTime() - (backwards*60*1000));
-   if(server="EU"){
+   if(server=="EU"){
       MapEU[0] = map
       MapEU[1] = CurrDate; 
       } 
-   else if(server="NA"){
+   else{
       MapNA[0] = map
       MapNA[1] = CurrDate;
       }
