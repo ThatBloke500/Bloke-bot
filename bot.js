@@ -86,11 +86,11 @@ function sniper(map, server){
 
 function mapCaller(){
    var time = new Date(Date.now());
-   var timeleft = 4 - (time.getMinutes % 4);
+   var timeleft = 4 - (time.getMinutes() % 4);
    var NAvalid = Math.abs(time - MapNA[1]) < 230000 ? "Valid" : "Invalid";
    var EUvalid =  Math.abs(time - MapEU[1]) < 230000 ? "Valid" :  "Invalid"; // 4mins *60*1000 = 240,000 ms PAIN.
 
-return "Last recorded maps were: \n NA: ```" + MapNA[0] + ": " + NAvalid + "\n EU: " + MapEU[0] + ": " + EUvalid + "\n next switch:" + timeleft + " mins```"; 
+return "Last recorded maps were: \n NA: `" + MapNA[0] + ": " + NAvalid + "` \n EU: `" + MapEU[0] + ": " + EUvalid + "`\n next switch:" + timeleft + " mins`"; 
 }
 
 
@@ -121,8 +121,13 @@ bot.on('message', function (user, userID, channelID, message, evt) {
               bot.sendMessage({
                     to: channelID,
                     message: mapCaller()});
-              break;
-            case "sch":
+              break;}              
+         }
+});
+              
+              
+          
+           /* case "sch":
                 var list = Exp(Rotnew, Rotnew.length, false);
                     bot.sendMessage({
                     to: channelID,
@@ -146,10 +151,8 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                  bot.sendMessage({
                     to: channelID,
                     message:"UTC+2:\n" + list + reminder});}
-              break;
-                }              
-         }
-});
+              break;*/
+
 
 /*var Rotold = ["Ghost Town",	
 "Highway",
