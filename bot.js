@@ -35,6 +35,7 @@ function handler(){return 0}
 function sniper(map, server){
    if(map.length < 3){return;} //check the name isnt less than 3 chars. not the best data check but whatever. 
    var CurrDate = new Date(Date.now());
+   var list = "sent \n";
    var backwards = CurrDate.getMinutes() % 4
    CurrDate.setTime(CurrDate.getTime() - (backwards*60*1000));
    if(server=="EU"){
@@ -43,17 +44,20 @@ function sniper(map, server){
       if(RotEU.length < 28){
       RotEU.push([MapEU[0],MapEU[1]])
       }
-      } 
+       else{list += mapCaller("EU")}
+   } 
    else{
       MapNA[0] = map
       MapNA[1] = CurrDate;
       if(RotNA.length < 28){
       RotNA.push([MapNA[0],MapNA[1]])
-      }
+      }else{list += mapCaller("NA")}}
    }
+return list;
 }
 function mapCaller(SV){
    if(SV === undefined){SV = "EU";}
+   console.log(SV);
    //SV needs to be capitalised
    var time = new Date(Date.now());
    var timeleft = 4 - (time.getMinutes() % 4);
@@ -61,7 +65,7 @@ function mapCaller(SV){
    var EUvalid =  Math.abs(time - MapEU[1]) < 230000 ? "Valid" :  "Invalid"; // 4mins *60*1000 = 240,000 ms PAIN.
    var x=0; 
    var list = "MAP-DATADUMP: \n";
-   if(SV="EU"){ 
+   if(SV=="EU"){ 
       do{
          list+= "`" + RotEU[x].join() + "` \n"
          x++;
@@ -69,24 +73,19 @@ function mapCaller(SV){
          if(RotEU.length > 27){RotEU = []}
       return list;
    }
-   if(SV="NA"){
+   if(SV== "NA" || SV != "EU"){
     do{
        list+= "`" + RotNA[x].join() + "` \n"
        x++;
    } while(x < RotNA.length)
-      if(RotEU.length > 27){RotEU = []}
+      if(RotNA.length > 27){RotEU = []}
       
    return list + " these were the maps collected this past cycle";
    }
    else{return "Last recorded maps were: \n NA: `" + MapNA[0] + ": " + NAvalid + "` \n EU: `" + MapEU[0] + ": " + EUvalid + "`\n next switch: **" + timeleft + " mins **"; 
+
+       }
 }
-
-}
-
-
-
-
-
 
 
 
@@ -95,20 +94,19 @@ bot.on('message', function (user, userID, channelID, message, evt) {
     if (message.substring(0, 1) == '!') {
         var args = message.substring(1).split(' ');
         var cmd = args[0];
-        if(args[2]){args[1]+= " " + args[2]} //combine the two words of maps like El halluf alamein into one with a bit of gorey code.
+        if(args.length > 2){args[1]+= " " + args[2]} //combine the two words of maps like El halluf alamein into one with a bit of gorey code.
        
         switch(cmd) {   
            case "na":
               sniper(args[1], "NA")
               bot.sendMessage({
                  to: channelID,
-                 message:"sent to process."});
+                 message:sniper(args[1], "NA")});
               break;
            case "eu":
-              sniper(args[1], "EU")
                bot.sendMessage({
                  to: channelID,
-                 message:"sent to process."});
+                 message:sniper(args[1], "EU")});
               
               break;
            case "map":
