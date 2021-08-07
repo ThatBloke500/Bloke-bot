@@ -66,6 +66,7 @@ function mapCaller(SV){
          list+= "`" + RotEU[x].join() + "` \n"
          x++;
       } while(x < RotEU.length)
+         if(RotEU.length > 27){RotEU = []}
       return list;
    }
    if(SV="NA"){
@@ -73,6 +74,8 @@ function mapCaller(SV){
        list+= "`" + RotNA[x].join() + "` \n"
        x++;
    } while(x < RotNA.length)
+      if(RotEU.length > 27){RotEU = []}
+      
    return list + " these were the maps collected this past cycle";
    }
    else{return "Last recorded maps were: \n NA: `" + MapNA[0] + ": " + NAvalid + "` \n EU: `" + MapEU[0] + ": " + EUvalid + "`\n next switch: **" + timeleft + " mins **"; 
