@@ -32,6 +32,7 @@ var reminder = "\n **CW map (normal map)** = Tier 9(tier 6)"
 
 
 function handler(){return 0}
+
 function sniper(map, server){
    if(map.length < 3){return;} //check the name isnt less than 3 chars. not the best data check but whatever. 
    var CurrDate = new Date(Date.now());
@@ -51,10 +52,13 @@ function sniper(map, server){
       MapNA[1] = CurrDate;
       if(RotNA.length < 28){
       RotNA.push([MapNA[0],MapNA[1]])
-      }else{list += mapCaller("NA")}}
+      }
+      else{list += mapCaller("NA")}
    }
 return list;
 }
+
+
 function mapCaller(SV){
    if(SV === undefined){SV = "EU";}
    console.log(SV);
