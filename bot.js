@@ -62,14 +62,14 @@ function mapCaller(SV="EU"){
    var list = "MAP-DATADUMP: \n";
    if(SV="EU"){ 
       do{
-         list+= RotEU[x] + " \n"
+         list+= RotEU[x].join("-") + " \n"
          x++;
       } while(x < RotEU.length)
       return list;
    }
    if(SV="NA"){
     do{
-       list+= "`" RotNA[x] + "` \n"
+       list+= "`" RotNA[x].join("-") + "` \n"
        x++;
    } while(x < RotNA.length)
    return list + " these were the maps collected this past cycle";
