@@ -52,7 +52,8 @@ function sniper(map, server){
       }
    }
 }
-function mapCaller(SV="EU"){
+function mapCaller(SV){
+   if(SV === undefined){SV = "EU";}
    //SV needs to be capitalised
    var time = new Date(Date.now());
    var timeleft = 4 - (time.getMinutes() % 4);
@@ -62,14 +63,14 @@ function mapCaller(SV="EU"){
    var list = "MAP-DATADUMP: \n";
    if(SV="EU"){ 
       do{
-         list+= RotEU[x].join("-") + " \n"
+         list+= RotEU[x].join() + " \n"
          x++;
       } while(x < RotEU.length)
       return list;
    }
    if(SV="NA"){
     do{
-       list+= "`" RotNA[x].join("-") + "` \n"
+       list+= "`" RotNA[x].join() + "` \n"
        x++;
    } while(x < RotNA.length)
    return list + " these were the maps collected this past cycle";
