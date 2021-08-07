@@ -63,21 +63,23 @@ function mapCaller(SV){
    var list = "MAP-DATADUMP: \n";
    if(SV="EU"){ 
       do{
-         list+= RotEU[x].join() + " \n"
+         list+= "`" + RotEU[x].join() + "` \n"
          x++;
       } while(x < RotEU.length)
       return list;
    }
    if(SV="NA"){
     do{
-       list+= "`" RotNA[x].join() + "` \n"
+       list+= "`" + RotNA[x].join() + "` \n"
        x++;
    } while(x < RotNA.length)
    return list + " these were the maps collected this past cycle";
    }
    else{return "Last recorded maps were: \n NA: `" + MapNA[0] + ": " + NAvalid + "` \n EU: `" + MapEU[0] + ": " + EUvalid + "`\n next switch: **" + timeleft + " mins **"; 
-       }
-   }
+}
+
+}
+
 
 
 
