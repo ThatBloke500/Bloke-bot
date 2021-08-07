@@ -21,7 +21,8 @@ bot.on('ready', function (evt) {
 console.log('Logged in as %s - %s\n', bot.username, bot.id);
 });
 
-var Rotnew = ["no data", "no data", "no data", "no data", "no data", "no data", "no data", "no data"];
+var RotNA = [];
+var RotEU = [];
 var RotLth = 112; //rotation length * 4.
 
 var MapNA = ["Mannheim", new Date('August 19, 1975 23:15:30')] // mutable global variable to save map name - check not null or empty. [map, date] format
@@ -30,6 +31,7 @@ var reminder = "\n **CW map (normal map)** = Tier 9(tier 6)"
 //var ElMins = [1440*6,0,1440,2880,1440*3,1440*4,1440*5]//sun, mon, tue, wed, -> etc. JS days have sunday first as = 0 instead of something sane like 6.
 
 
+function handler(){return 0}
 function sniper(map, server){
    if(map.length < 3){return;} //check the name isnt less than 3 chars. not the best data check but whatever. 
    var CurrDate = new Date(Date.now());
@@ -38,21 +40,46 @@ function sniper(map, server){
    if(server=="EU"){
       MapEU[0] = map
       MapEU[1] = CurrDate; 
+      if(RotEU.length < 28){
+      RotEU.push([MapEU[0],MapEU[1]])
+      }
       } 
    else{
       MapNA[0] = map
       MapNA[1] = CurrDate;
+      if(RotNA.length < 28){
+      RotNA.push([MapNA[0],MapNA[1]])
       }
+   }
 }
-
-function mapCaller(){
+function mapCaller(SV="EU"){
+   //SV needs to be capitalised
    var time = new Date(Date.now());
    var timeleft = 4 - (time.getMinutes() % 4);
    var NAvalid = Math.abs(time - MapNA[1]) < 230000 ? "Valid" : "Invalid";
    var EUvalid =  Math.abs(time - MapEU[1]) < 230000 ? "Valid" :  "Invalid"; // 4mins *60*1000 = 240,000 ms PAIN.
+   var x=0; 
+   var list = "MAP-DATADUMP: \n";
+   if(SV="EU"){ 
+      do{
+         list+= RotEU[x] + " \n"
+         x++;
+      } while(x < RotEU.length)
+      return list;
+   }
+   if(SV="NA"){
+    do{
+       list+= "`" RotNA[x] + "` \n"
+       x++;
+   } while(x < RotNA.length)
+   return list + " these were the maps collected this past cycle";
+   }
+   else{return "Last recorded maps were: \n NA: `" + MapNA[0] + ": " + NAvalid + "` \n EU: `" + MapEU[0] + ": " + EUvalid + "`\n next switch: **" + timeleft + " mins **"; 
+       }
+   }
 
-return "Last recorded maps were: \n NA: `" + MapNA[0] + ": " + NAvalid + "` \n EU: `" + MapEU[0] + ": " + EUvalid + "`\n next switch: **" + timeleft + " mins **"; 
-}
+
+
 
 
 
@@ -62,7 +89,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
     if (message.substring(0, 1) == '!') {
         var args = message.substring(1).split(' ');
         var cmd = args[0];
-        //if(args[2] != null){args[1]+= " " + args[2]} //combine the two words of maps like El halluf alamein into one with a bit of gorey code.
+        if(args[2]){args[1]+= " " + args[2]} //combine the two words of maps like El halluf alamein into one with a bit of gorey code.
        
         switch(cmd) {   
            case "na":
@@ -81,7 +108,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
            case "map":
               bot.sendMessage({
                     to: channelID,
-                    message: mapCaller()});
+                    message: mapCaller(args[1])});
               break;}              
          }
 });
